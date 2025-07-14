@@ -60,11 +60,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus.snapshot</id>
-			<url>http://34.93.142.175:8081/repository/maven-snapshots/</url>
+			<url>http://localhost:8081/repository/snapshot/</url>
 		</snapshotRepository>
 		<repository>
 			<id>nexus.release</id>
-			<url>http://34.93.142.175:8081/repository/mvnpipe1release/</url>
+			<url>http://localhost:8081/repository/release/</url>
 		</repository>
 	</distributionManagement>
 	<build>
