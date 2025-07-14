@@ -3,12 +3,12 @@
         <server>
             <id>nexus.snapshot</id>
             <username>admin</username>
-            <password>Amma@1234</password>
+            <password>Mouna@123</password>
         </server>
         <server>
             <id>nexus.release</id>
             <username>admin</username>
-            <password>Amma@1234</password>
+            <password>Mouna@123</password>
         </server>
     </servers>
 </settings>
