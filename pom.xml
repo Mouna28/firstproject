@@ -60,11 +60,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus.snapshot</id>
-			<url>http://localhost:8081/repository/snapshot/</url>
+			<url>http://34.71.70.89:8081/repository/snapshot/</url>
 		</snapshotRepository>
 		<repository>
 			<id>nexus.release</id>
-			<url>http://localhost:8081/repository/release/</url>
+			<url>http://34.71.70.89:8081/repository/release/</url>
 		</repository>
 	</distributionManagement>
 	<build>
