@@ -1,1 +1,46 @@
+pipeline {
+    agent any
+        tools{
+            maven "maven"
+        }
+    stages {
+        //Step 1- remove the target directory
+        stage('Clean the target') {
+            steps {
+                sh "mvn clean"
+            }
+        
+        }
+        //STep-2 validating the code
+        stage('validate the code') {
+            steps {
+                sh "mvn validate"
+            }
+        }
 
+        //Step-3 running unit tests
+        stage ('running unit test cases') {
+            steps {
+                sh "mvn test"
+            }
+        }
+
+        //Step 4 pacaking to JAR file
+
+        stage ('Creating a Jar file') {
+            steps {
+                sh "mvn package"
+            
+            }
+
+        }
+
+        // step-5: deploying to registry
+
+        stage ('deploying to registry') {
+            steps {
+                sh "mvn deploy -s setting.xml"
+            }
+        }
+    }
+}
