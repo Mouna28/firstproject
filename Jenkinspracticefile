@@ -39,7 +39,7 @@ pipeline {
 
         stage ('deploying to registry') {
             steps {
-                sh "mvn deploy -s setting.xml"
+                sh "mvn deploy -s settings.xml"
             }
         }
     }
