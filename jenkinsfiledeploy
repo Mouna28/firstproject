@@ -4,7 +4,7 @@ pipeline {
 
     environment {
         JAR_NAME     = "java-kubernetes-1.0.0.jar"
-        TARGET_DIR   = "/home/$(whoami)/javajar"
+        TARGET_DIR   = "${HOME}/javajar"
         SERVICE_NAME = "java-kubernetes"
         BACKUP_DATE  = "${new Date().format('yyyy-MM-dd_HHmm', TimeZone.getTimeZone('IST'))}"
     }
