@@ -43,7 +43,7 @@ pipeline {
                 sh '''
                 echo "Building Docker image with tag: $DATE"
                 ls -ltrh
-                docker build -t $IMAGE_NAME:$DATE .
+                docker build --build-arg $JAR_NAME=JAR_NAME -t $IMAGE_NAME:$DATE .
                 '''
             }
         }
