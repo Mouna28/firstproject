@@ -1,3 +1,3 @@
 FROM openjdk
-COPY ./target/java-kubernetes-1.0.1.jar app.jar
+COPY ./target/${JAR_NAME} app.jar
 ENTRYPOINT ["java","-jar", "app.jar"]
