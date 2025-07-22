@@ -23,7 +23,7 @@ pipeline {
                         fi
 
                         echo "==> Downloading new JAR from Nexus"
-                        curl -u $USERNAME:$PASSWORD "http://34.135.60.205:8081/repository/mavenrelease/com/example/java-kubernetes/1.0.0/$JAR_NAME" --output $JAR_NAME
+                        curl -u $USERNAME:$PASSWORD "http://34.60.28.29:8081/repository/mavenrelease/com/example/java-kubernetes/1.0.0/$JAR_NAME" --output $JAR_NAME
                     '''
                 }
             }
