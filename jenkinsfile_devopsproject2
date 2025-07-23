@@ -9,7 +9,7 @@ pipeline {
         // Safe date format for Docker tags (e.g., 2025-07-15_1932)
         DATE = "${new Date().format('yyyy-MM-dd_HHmm', TimeZone.getTimeZone('IST'))}"
         IMAGE_NAME = "mounalatha/helloworld-devopsproject2"
-        JAR_NAME ='java-kubernetes-1.0.1.jar'
+        JAR_NAME ='java-kubernetes-1.0.0.jar'
     }
 
     stages {
