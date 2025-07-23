@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "mounalatha/helloworld-devopsproject2"
+        IMAGE_TAG = "2025-07-23_0647"
+        CONTAINER_NAME = "helloworld-devops-container"    
+    }
+
+    stages {
+        stage ( "Pull docker image from hub") {
+            steps {
+                sh '''
+                echo "Pulling the docker image"
+                docker pull $IMAGE_NAME:$IMAGE_TAG
+                '''
+            }
+        }
+        stage ("Run the image") {
+            steps {
+                sh '''
+
+                echo "Stop the cont$ainer if exists already"
+                docker stop $CONTAINER_NAME || true
+
+                echo "Removing the container"
+                docker rm $CONTAINER_NAME || true
+
+                echo "Container creation"
+                docker run -d $CONTAINER_NAME -p 8080:8080  $IMAGE_NAME:$IMAGE_TAG
+                ''' 
+            }
+        }
+    }
+
+    post {
+        success {
+             echo "Deployment completed"
+
+        }
+        failure {
+            echo "Deployment failed"
+        }
+    }
+}
