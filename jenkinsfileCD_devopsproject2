@@ -27,7 +27,7 @@ pipeline {
                 docker rm $CONTAINER_NAME || true
 
                 echo "Container creation"
-                docker run -d $CONTAINER_NAME -p 8080:8080  $IMAGE_NAME:$IMAGE_TAG
+                docker run -d --name $CONTAINER_NAME -p 8080:8080  $IMAGE_NAME:$IMAGE_TAG
                 ''' 
             }
         }
