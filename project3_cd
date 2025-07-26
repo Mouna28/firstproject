@@ -10,8 +10,7 @@ pipeline {
         stage('Docker Pull') {
             steps {
                 sh '''
-                /* echo "Nandhu1234@" | docker login -u vivekkontham --password-stdin 
-                */
+               
                 docker pull $IMAGE_NAME:$TAG
                 '''
             }
