@@ -1,0 +1,124 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven'
+    }
+
+    environment {
+        DATE = "${new Date().format('yyyy-MM-dd_HHmm', TimeZone.getTimeZone('IST'))}"
+        IMAGE_NAME = "mounalatha/helloworld-devopsproject2"
+    }
+
+    stages {
+
+        stage('SAST') {
+            steps {
+                sh "mvn clean test"
+            }
+        }
+
+        stage('SCA') {
+            steps {
+                sh '''
+                trivy fs  --format template --template "@html.tpl" -o report-sca.html
+                '''
+            }
+        }
+        stage('Publish Trivy SCA Report') {
+            steps {
+                publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'report-sca.html',
+                    reportName: 'Trivy SCA Vulnerability Report',
+                    reportTitles: 'Trivy HTML Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                sh "mvn clean test"
+            }
+        }
+
+        stage('Publish Test Results') {
+            steps {
+                junit 'target/surefire-reports/*.xml'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                echo "Building Docker image with tag: $DATE"
+                ls -ltrh
+                docker build -t $IMAGE_NAME:$DATE .
+                '''
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                    echo "Pushing Docker image: $IMAGE_NAME:$DATE"
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker push $IMAGE_NAME:$DATE
+                    '''
+              }
+          }
+        stage('Trivy SCA Scan') {
+            steps {
+                sh '''
+                trivy config --format template --template "@html.tpl" -o report-iac.html .
+                '''
+            }
+        }
+
+        stage('Publish Trivy IAC Report') {
+            steps {
+                publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'report-iac.html',
+                    reportName: 'Trivy SCA Vulnerability Report',
+                    reportTitles: 'Trivy HTML Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+            }
+        }
+
+        stage('Trivy Image Scan') {
+            steps {
+                sh '''
+                trivy image --format template --template "@html.tpl" -o report-docker.html $IMAGE_NAME:$DATE
+                '''
+            }
+        }
+
+        stage('Publish Trivy Image Scan Report') {
+            steps {
+                publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'report-docker.html',
+                    reportName: 'Trivy Image Vulnerability Report',
+                    reportTitles: 'Trivy HTML Report',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+            }
+        }
+    }
+}
