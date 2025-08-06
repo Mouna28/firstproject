@@ -14,14 +14,14 @@ pipeline {
 
         stage('SAST') {
             steps {
-                sh "mvn clean test"
+                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=mavenInt -Dsonar.projectName='mavenInt' -Dsonar.host.url=http://34.93.170.203/sonar -Dsonar.token=sqp_02df09424bc6e704f57d6ed9b98d75b5c43f0742"
             }
         }
 
         stage('SCA') {
             steps {
                 sh '''
-                trivy fs  --format template --template "@html.tpl" -o report-sca.html
+                trivy fs  --format template --template "@html.tpl" -o report-sca.html .
                 '''
             }
         }
